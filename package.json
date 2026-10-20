@@ -1,0 +1,56 @@
+{
+  "name": "@ednaaaj/agent-kit",
+  "version": "0.2.0",
+  "description": "Install AI-agent skill bundles (workflow, guardrails, savers), Jira/Slack setup and dev tools for Claude Code, Cursor, Antigravity/Gemini CLI and Codex. Add private skill packs.",
+  "type": "module",
+  "files": [
+    "bin",
+    "bundles",
+    "targets.json",
+    "docs",
+    "examples",
+    "README.md",
+    "AGENTS.md",
+    "CLAUDE.md",
+    "CONTRIBUTING.md",
+    "SECURITY.md",
+    "CHANGELOG.md",
+    "VERSION",
+    "LICENSE"
+  ],
+  "bin": {
+    "agent-kit": "bin/cli.mjs"
+  },
+  "scripts": {
+    "test": "node --test tests/*.test.mjs",
+    "validate": "node scripts/validate.mjs",
+    "check": "node --check bin/cli.mjs && npm run validate && npm test"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ednaaaj/movegent-kit.git"
+  },
+  "homepage": "https://github.com/ednaaaj/movegent-kit#readme",
+  "bugs": {
+    "url": "https://github.com/ednaaaj/movegent-kit/issues"
+  },
+  "keywords": [
+    "claude-code",
+    "cursor",
+    "gemini-cli",
+    "antigravity",
+    "codex",
+    "agent-skills",
+    "jira",
+    "mcp",
+    "bundles"
+  ],
+  "author": "Jhondi Pamonag",
+  "publishConfig": {
+    "access": "public"
+  }
+}
