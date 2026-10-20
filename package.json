@@ -1,6 +1,6 @@
 {
   "name": "@ednaaaj/agent-kit",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Install AI-agent skills, Jira/Slack setup and dev tools for Claude Code, Cursor, Antigravity/Gemini CLI and Codex. Add private skill packs.",
   "type": "module",
   "bin": {
