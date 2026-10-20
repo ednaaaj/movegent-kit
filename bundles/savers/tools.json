@@ -1,0 +1,51 @@
+{
+  "version": 1,
+  "tools": {
+    "caveman": {
+      "desc": "terse replies, ~75% fewer output tokens",
+      "all": ["npx", "-y", "github:JuliusBrussee/caveman"]
+    },
+    "ponytail": {
+      "desc": "lazy-senior-dev mode: shortest working code",
+      "claude": [
+        ["claude", "plugin", "marketplace", "add", "https://github.com/DietrichGebert/ponytail.git"],
+        ["claude", "plugin", "install", "ponytail@ponytail"]
+      ],
+      "gemini": [["gemini", "extensions", "install", "https://github.com/DietrichGebert/ponytail"]],
+      "antigravity": [["agy", "plugin", "install", "https://github.com/DietrichGebert/ponytail"]],
+      "cursor": "manual: copy .cursor/rules from https://github.com/DietrichGebert/ponytail",
+      "codex": "manual: see the Codex section in https://github.com/DietrichGebert/ponytail"
+    },
+    "rtk": {
+      "desc": "compresses shell output 60-90% (needs Homebrew)",
+      "hint": "no brew: https://github.com/rtk-ai/rtk#installation",
+      "all": ["brew", "install", "rtk"],
+      "claude": [["rtk", "init", "-g"]],
+      "gemini": [["rtk", "init", "-g", "--gemini"]],
+      "codex": [["rtk", "init", "-g", "--codex"]],
+      "cursor": [["rtk", "init", "-g", "--agent", "cursor"]],
+      "antigravity": [["rtk", "init", "--agent", "antigravity"]],
+      "other": "manual: see https://github.com/rtk-ai/rtk#installation"
+    },
+    "headroom": {
+      "desc": "context compression + retrieve MCP (needs uv)",
+      "hint": "no uv: https://docs.astral.sh/uv/",
+      "all": ["uv", "tool", "install", "headroom-ai"],
+      "after": ["headroom", "mcp", "install"]
+    },
+    "context-mode": {
+      "desc": "keeps big tool output out of your context (Claude Code plugin)",
+      "claude": [
+        ["claude", "plugin", "marketplace", "add", "mksglu/context-mode"],
+        ["claude", "plugin", "install", "context-mode@context-mode"]
+      ],
+      "other": "manual: npm i -g context-mode, then add it as an MCP server"
+    },
+    "graphify": {
+      "desc": "turns a codebase into a queryable knowledge graph (needs uv)",
+      "hint": "no uv: https://docs.astral.sh/uv/",
+      "all": ["uv", "tool", "install", "graphifyy"],
+      "postTemplate": ["graphify", "install", "--platform", "{agent}"]
+    }
+  }
+}
