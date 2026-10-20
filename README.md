@@ -2,7 +2,7 @@
 
 One installer for AI coding agents (Claude Code, Cursor, Antigravity/Gemini CLI, Codex):
 a ticket-to-MR workflow, frontend guardrail skills, Jira MCP, a Slack allowlist,
-caveman/ponytail/graphify, plus **private skill packs** a team can add on top.
+token savers (caveman, ponytail, rtk, headroom, context-mode, graphify), plus **private skill packs** a team can add on top.
 No company keys, IDs or handles are baked in: each person sets their own in `init`.
 
 ## Install
@@ -38,6 +38,22 @@ Nothing is required: press Enter to skip any question. **No passwords or API tok
 **`install`** asks one thing: which agents you use (the numbered menu above). Then it copies skills, adds the
 Jira MCP, and runs the caveman / ponytail / graphify installers (those may ask their own questions).
 Jira login happens in your browser the first time an agent uses Jira: you sign in as yourself.
+
+## Extra tools (token savers)
+After the agent menu, `install` offers these (pick numbers, `all`, `none`, or `--tools=rtk,headroom`; `--skip-tools` skips the step):
+
+| Tool | What it does | Needs |
+| --- | --- | --- |
+| `caveman` | terse replies, ~75% fewer output tokens | npx |
+| `ponytail` | "lazy senior dev" mode: shortest working code | agent CLI (Cursor/Codex: manual) |
+| `rtk` | compresses shell command output 60-90% | Homebrew |
+| `headroom` | context compression + retrieve MCP | uv |
+| `context-mode` | keeps big tool output out of your context | Claude Code (others: manual) |
+| `graphify` | turns a codebase into a queryable graph | uv |
+
+These tools **change agent behaviour** (RTK and context-mode add hooks to your agent's settings), so only pick
+what you want. A missing prerequisite is reported and skipped, never fatal. Third-party tools are installed from
+their own upstream repos; see each project for its licence.
 
 ## Which agent reads what
 `install` asks which agents you use (numbered menu, found ones pre-selected) and writes to each one's own folder:

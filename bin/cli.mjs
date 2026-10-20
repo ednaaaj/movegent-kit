@@ -33,17 +33,46 @@ const AGENTS = {
     mcp: () => sh('codex', ['mcp', 'add', 'atlassian', '--', ...ATLASSIAN]) },
 };
 
-// Third-party tools. Each command list runs only for agents that are installed.
+// Third-party tools (token savers + helpers). Per-agent steps run only for the agents you picked.
+// all = run once; after = run once after `all`; <agent> = steps (or a manual note) for that agent; other = note for the rest.
+const PONY = 'https://github.com/DietrichGebert/ponytail';
 const TOOLS = {
-  caveman: { all: ['npx', '-y', 'github:JuliusBrussee/caveman'] }, // its installer auto-detects every agent
-  ponytail: {
-    claude: [['claude', 'plugin', 'marketplace', 'add', 'https://github.com/DietrichGebert/ponytail.git'], ['claude', 'plugin', 'install', 'ponytail@ponytail']],
-    gemini: [['gemini', 'extensions', 'install', 'https://github.com/DietrichGebert/ponytail']],
-    cursor: 'manual: copy .cursor/rules from https://github.com/DietrichGebert/ponytail',
-    codex: 'manual: see Codex section in https://github.com/DietrichGebert/ponytail',
-  },
-  graphify: { all: ['uv', 'tool', 'install', 'graphifyy'], post: (a) => ['graphify', 'install', '--platform', a] },
+  caveman: { desc: 'terse replies, ~75% fewer output tokens',
+    all: ['npx', '-y', 'github:JuliusBrussee/caveman'] }, // its installer auto-detects every agent
+  ponytail: { desc: 'lazy-senior-dev mode: shortest working code',
+    claude: [['claude', 'plugin', 'marketplace', 'add', `${PONY}.git`], ['claude', 'plugin', 'install', 'ponytail@ponytail']],
+    gemini: [['gemini', 'extensions', 'install', PONY]],
+    antigravity: [['agy', 'plugin', 'install', PONY]],
+    cursor: `manual: copy .cursor/rules from ${PONY}`, codex: `manual: see the Codex section in ${PONY}` },
+  rtk: { desc: 'compresses shell output 60-90% (needs Homebrew)', hint: 'no brew: https://github.com/rtk-ai/rtk#installation',
+    all: ['brew', 'install', 'rtk'],
+    claude: [['rtk', 'init', '-g']], gemini: [['rtk', 'init', '-g', '--gemini']],
+    codex: [['rtk', 'init', '-g', '--codex']], cursor: [['rtk', 'init', '-g', '--agent', 'cursor']],
+    antigravity: [['rtk', 'init', '--agent', 'antigravity']],
+    other: 'manual: see https://github.com/rtk-ai/rtk#installation' },
+  headroom: { desc: 'context compression + retrieve MCP (needs uv)', hint: 'no uv: https://docs.astral.sh/uv/',
+    all: ['uv', 'tool', 'install', 'headroom-ai'], after: ['headroom', 'mcp', 'install'] },
+  'context-mode': { desc: 'keeps big tool output out of your context (Claude Code plugin)',
+    claude: [['claude', 'plugin', 'marketplace', 'add', 'mksglu/context-mode'], ['claude', 'plugin', 'install', 'context-mode@context-mode']],
+    other: 'manual: npm i -g context-mode, then add it as an MCP server' },
+  graphify: { desc: 'turns a codebase into a queryable knowledge graph (needs uv)', hint: 'no uv: https://docs.astral.sh/uv/',
+    all: ['uv', 'tool', 'install', 'graphifyy'], post: (a) => ['graphify', 'install', '--platform', a] },
 };
+
+async function pickTools() {
+  const names = Object.keys(TOOLS);
+  const want = opt('tools');
+  if (want) return want.split(',').map((s) => s.trim()).filter((s) => names.includes(s));
+  if (!process.stdin.isTTY) return names;
+  log('Extra tools (these change how your agent behaves; pick what you want):');
+  names.forEach((n, i) => log(`  ${i + 1}) ${n.padEnd(13)} ${TOOLS[n].desc}`));
+  const rl = createInterface({ input: process.stdin, output: process.stdout });
+  const a = (await rl.question('Numbers or names, comma separated, "all", "none", or Enter for all: ')).trim();
+  rl.close();
+  if (!a || a === 'all') return names;
+  if (a === 'none') return [];
+  return a.split(',').map((s) => s.trim()).map((s) => names[Number(s) - 1] || s).filter((s) => names.includes(s));
+}
 
 const log = (m) => console.log(m);
 const has = (bin) => spawnSync('sh', ['-c', `command -v ${bin}`]).status === 0;
@@ -207,15 +236,22 @@ async function install() {
   }
 
   if (!flag('skip-tools')) {
+    const picked = await pickTools();
     log('\n[tools]');
-    for (const [t, spec] of Object.entries(TOOLS)) {
-      log(` ${t}:`);
-      if (spec.all) sh(spec.all[0], spec.all.slice(1));
+    for (const name of picked) {
+      const spec = TOOLS[name];
+      log(` ${name}:`);
+      if (spec.all) {
+        if (!DRY && !has(spec.all[0]) && spec.hint) log(`  hint: ${spec.hint}`);
+        sh(spec.all[0], spec.all.slice(1));
+      }
+      if (spec.after) sh(spec.after[0], spec.after.slice(1));
       for (const [n] of found) {
         const todo = spec[n];
         if (typeof todo === 'string') log(`  ${n}: ${todo}`);
         else if (todo) todo.forEach((c) => sh(c[0], c.slice(1)));
         else if (spec.post) { const c = spec.post(n); sh(c[0], c.slice(1)); }
+        else if (spec.other) log(`  ${n}: ${spec.other}`);
       }
     }
   }
@@ -237,7 +273,7 @@ function doctor() {
 
 const help = `agent-kit
   init                          optional profile: GitLab, Jira site, Slack channel + people
-  install [--agents=a,b] [--pack=<git-url|path>] [--skip-mcp] [--skip-tools] [--dry-run]
+  install [--agents=a,b] [--tools=a,b] [--pack=<git-url|path>] [--skip-mcp] [--skip-tools] [--dry-run]
   pack add <git-url|path>       add a private skill pack (repo with skills/ and agents/)
   pack list | update | remove <name>
   doctor`;
