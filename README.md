@@ -7,6 +7,8 @@ No company keys, IDs or handles are baked in: each person sets their own in `ini
 
 ## Install
 ```bash
+npx @ednaaaj/agent-kit init && npx @ednaaaj/agent-kit install      # from npm
+# or from source:
 git clone git@github.com:ednaaaj/movegent-kit.git agent-kit && cd agent-kit
 node bin/cli.mjs init       # optional profile: GitLab, Jira site, Slack channel + people
 node bin/cli.mjs install    # pick agents, copy skills, add Jira MCP, install tools
@@ -14,6 +16,28 @@ node bin/cli.mjs doctor
 ```
 Flags: `--agents=claude,cursor`, `--skip-mcp`, `--skip-tools`, `--dry-run`.
 Update: `git pull && node bin/cli.mjs install --skip-tools`.
+
+## What it asks you
+Nothing is required: press Enter to skip any question. **No passwords or API tokens are ever asked for or stored.**
+
+**`init`** (saves your answers to `~/.agent-kit/config.json`, on your machine only):
+
+| # | Question | Example | Used for |
+| --- | --- | --- | --- |
+| 1 | Workspace folder | `~/work` | where skills find your repos |
+| 2 | GitLab username | `jdoe` | MR author / assignee |
+| 3 | Main GitLab project path | `group/sub/repo` | `glab` API calls |
+| 4 | MR reviewers | `alice,bob` | reviewers on new MRs |
+| 5 | Jira site host | `yourco.atlassian.net` | Jira links; the cloudId is looked up for you |
+| 6 | Slack channel name | `#team-reviews` | where MR posts go (blank skips Slack) |
+| 7 | Slack channel ID | `C0123ABCD` | from the channel's details; re-asks if invalid |
+| 8 | People to DM / @mention | `Alice,U0123ABCD` | one per line, blank line to finish |
+| 9 | Who is always @mentioned | `Alice` | blank = everyone listed |
+| 10 | Let the agent send without asking? | `n` | default `n`: it only drafts |
+
+**`install`** asks one thing: which agents you use (the numbered menu above). Then it copies skills, adds the
+Jira MCP, and runs the caveman / ponytail / graphify installers (those may ask their own questions).
+Jira login happens in your browser the first time an agent uses Jira: you sign in as yourself.
 
 ## Which agent reads what
 `install` asks which agents you use (numbered menu, found ones pre-selected) and writes to each one's own folder:
