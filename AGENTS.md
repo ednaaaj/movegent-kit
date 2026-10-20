@@ -24,11 +24,11 @@ Bundles today: `workflow`, `guardrails`, `savers`.
 
 ## Config contract
 
-`~/.agent-kit/config.json` keys: `workspace`, `gitlab_user`, `gitlab_project`, `reviewers`, `jira_site`, `jira_cloud_id`, `slack` (`auto_send`, `channel {name, id}`, `people [{name, id}]`, `mention []`), `bundles`, `packs`.
+`~/.agent-kit/config.json` keys: `repo_path`, `design_system_path`, `gitlab_user`, `gitlab_project`, `reviewers`, `jira_site`, `jira_cloud_id`, `slack` (`auto_send`, `channel {name, id}`, `people [{name, id}]`, `mention []`), `bundles`, `packs`.
 
 Skills must never hold real values. They use placeholders, filled from the config at install time:
 
-`<workspace>`, `<gitlab_user>`, `<gitlab_project>`, `<gitlab_project_encoded>`, `<reviewers>`, `<reviewers_csv>`, `<jira_site>`, `<jira_cloud_id>`, `<repo_path>`
+`<repo_path>`, `<design_system_path>`, `<gitlab_user>`, `<gitlab_project>`, `<gitlab_project_encoded>`, `<reviewers>`, `<reviewers_csv>`, `<jira_site>`, `<jira_cloud_id>`
 
 ## Hard rules
 

@@ -45,16 +45,17 @@ Nothing is required: press Enter to skip any question. Answers are saved to `~/.
 
 | # | Question | Example | Used for |
 | --- | --- | --- | --- |
-| 1 | Workspace folder | `~/work` | where skills find your repos |
-| 2 | GitLab username | `jdoe` | MR author / assignee |
-| 3 | Main GitLab project path | `group/sub/repo` | `glab` API calls |
-| 4 | MR reviewers | `alice,bob` | reviewers on new MRs |
-| 5 | Jira site host | `yourco.atlassian.net` | Jira links; the cloudId is looked up for you |
-| 6 | Slack channel name | `#team-reviews` | where MR posts go (blank skips Slack) |
-| 7 | Slack channel ID | `C0123ABCD` | from the channel's details; re-asks if invalid |
-| 8 | People to DM / @mention | `Alice,U0123ABCD` | one per line, blank line to finish |
-| 9 | Who is always @mentioned | `Alice` | blank = everyone listed |
-| 10 | Let the agent send without asking? | `n` | default `n`: it only drafts |
+| 1 | Repo folder to work in | blank | optional. Blank means the git root of the folder your agent runs in, so repos can live anywhere |
+| 2 | Design-system checkout | blank | optional, only the guardrails bundle uses it |
+| 3 | GitLab username | `jdoe` | MR author / assignee |
+| 4 | Main GitLab project path | `group/sub/repo` | `glab` API calls |
+| 5 | MR reviewers | `alice,bob` | reviewers on new MRs |
+| 6 | Jira site host | `yourco.atlassian.net` | Jira links; the cloudId is looked up for you |
+| 7 | Slack channel name | `#team-reviews` | where MR posts go (blank skips Slack) |
+| 8 | Slack channel ID | `C0123ABCD` | from the channel's details; re-asks if invalid |
+| 9 | People to DM / @mention | `Alice,U0123ABCD` | one per line, blank line to finish |
+| 10 | Who is always @mentioned | `Alice` | blank = everyone listed |
+| 11 | Let the agent send without asking? | `n` | default `n`: it only drafts |
 
 `install` asks which agents you use, which bundles you want, and which extra tools. Jira login happens in your
 browser the first time an agent uses Jira. Details: [docs/config.md](docs/config.md).

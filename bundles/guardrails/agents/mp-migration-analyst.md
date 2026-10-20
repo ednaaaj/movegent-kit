@@ -5,14 +5,14 @@ tools: Read, Bash, Grep, Glob, Write
 color: cyan
 ---
 
-> **Config:** `<workspace>` below = the `workspace` value in `~/.agent-kit/config.json` (the folder that contains your repos). If missing, ask the user once, or tell them to run `agent-kit init`.
+> **Config:** `<repo_path>` is the repo you are working in: `repo_path` from `~/.agent-kit/config.json` if set, otherwise the git root of the current folder (`git rev-parse --show-toplevel`). Never assume a fixed parent folder. `<design_system_path>` is `design_system_path` from the same file (the design-system checkout); if it is empty, ask the user once. If the file is missing, run `agent-kit init`.
 
 You deeply understand one old component and produce a migration plan. You write no code. You produce one JSON file.
 
 ## Read these first
 
-- `<workspace>/move-pages/.gemini/tools/theme-map.json`
-- `<workspace>/move-pages/.gemini/tools/component-map.json`
+- `<repo_path>/.gemini/tools/theme-map.json`
+- `<repo_path>/.gemini/tools/component-map.json`
 - Skill `mp-component-structure`
 
 ## Step 1 — Read the old component fully
@@ -39,7 +39,7 @@ Every file in the old component folder: main implementation, PropTypes file, sto
 
 ## Step 3 — Write the plan
 
-Write `<workspace>/move-pages/.gemini/tools/migration-plan.json`:
+Write `<repo_path>/.gemini/tools/migration-plan.json`:
 
 ```json
 {

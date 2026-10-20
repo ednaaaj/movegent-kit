@@ -3,13 +3,13 @@ name: mp-component-swap
 description: Replace old components with Phoenix design-system components using component-map.json — reading status (mapped/partial/skipped), applying propMap transforms, handling needs_verification props, and the exact TODO comment formats for skipped components. Use when migrating a component or swapping a legacy widget for its Phoenix equivalent.
 ---
 
-> **Config:** `<workspace>` below = the `workspace` value in `~/.agent-kit/config.json` (the folder that contains your repos). If missing, ask the user once, or tell them to run `agent-kit init`.
+> **Config:** `<repo_path>` is the repo you are working in: `repo_path` from `~/.agent-kit/config.json` if set, otherwise the git root of the current folder (`git rev-parse --show-toplevel`). Never assume a fixed parent folder. `<design_system_path>` is `design_system_path` from the same file (the design-system checkout); if it is empty, ask the user once. If the file is missing, run `agent-kit init`.
 
 # Component Swap
 
 How to replace old components with new design system components using the component map.
 
-Map file: `<workspace>/move-pages/.gemini/tools/component-map.json`
+Map file: `<repo_path>/.gemini/tools/component-map.json`
 
 ---
 

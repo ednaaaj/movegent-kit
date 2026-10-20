@@ -45,7 +45,7 @@ flowchart TD
 ## Pieces
 
 **Config.** `~/.agent-kit/config.json` is written by `init` and read by skills at runtime. Skills refer to values
-with placeholders such as `<workspace>` and `<gitlab_user>`. The repo holds no real values. See [config.md](config.md).
+with placeholders such as `<repo_path>` and `<gitlab_user>`. The repo holds no real values. See [config.md](config.md).
 
 **Bundles.** Content lives in `bundles/<name>/`. `workflow` and `guardrails` each hold `skills/` and `agents/`;
 `savers` holds `tools.json`. `install` asks which bundles you want, saves the answer as `bundles` in the config, and

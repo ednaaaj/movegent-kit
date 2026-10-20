@@ -99,7 +99,7 @@ if (targets) for (const [k, v] of Object.entries(targets.agents ?? {})) {
 }
 const tools = readJson('bundles/savers/tools.json', true);
 if (tools) for (const [k, v] of Object.entries(tools.tools ?? {})) if (!v?.desc) fail(`bundles/savers/tools.json: "${k}" missing desc`);
-const CONFIG_KEYS = ['workspace', 'gitlab_user', 'gitlab_project', 'reviewers', 'jira_site', 'jira_cloud_id', 'slack', 'packs', 'bundles'];
+const CONFIG_KEYS = ['repo_path', 'design_system_path', 'gitlab_user', 'gitlab_project', 'reviewers', 'jira_site', 'jira_cloud_id', 'slack', 'packs', 'bundles'];
 const example = readJson('examples/config.example.json', true);
 if (example) for (const k of Object.keys(example)) if (!CONFIG_KEYS.includes(k)) fail(`examples/config.example.json: key "${k}" not allowed`);
 

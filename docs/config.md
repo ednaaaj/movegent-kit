@@ -7,7 +7,8 @@ machine. Full example: [examples/config.example.json](../examples/config.example
 
 | Key | Meaning | Used by |
 | --- | --- | --- |
-| `workspace` | folder where your repos live | workflow skills and subagents (`<workspace>`) |
+| `repo_path` | optional. Repo to work in. Blank = the git root of the folder your agent runs in | workflow and guardrails skills (`<repo_path>`) |
+| `design_system_path` | optional. Path to your design-system checkout | guardrails bundle (`<design_system_path>`) |
 | `gitlab_user` | your GitLab username | MR author / assignee (`ship`, `ticket-to-mr`, `mr-shipper`) |
 | `gitlab_project` | main project path `group/subgroup/repo` | `glab` API calls, `mr-babysit`, `mr-review`, `mr-reviewer` |
 | `reviewers` | usual MR reviewer usernames (array) | reviewers on new MRs |
@@ -20,8 +21,11 @@ machine. Full example: [examples/config.example.json](../examples/config.example
 | `bundles` | bundles to install, e.g. `["workflow", "guardrails"]`; saved by `install`, or set with `--bundles` | `install` |
 | `packs` | registered packs `[{ name, url, local }]`; managed by `pack add/remove` | `install` |
 
-Skills reference these as placeholders (`<workspace>`, `<gitlab_user>`, `<reviewers>`, `<jira_site>`, and so on).
+Skills reference these as placeholders (`<repo_path>`, `<gitlab_user>`, `<reviewers>`, `<jira_site>`, and so on).
 If the file or a value is missing, skills ask once or tell you to run `agent-kit init`.
+
+`<repo_path>` needs no setup. Skills use the git root of the folder your agent is running in, so the repo can live
+anywhere. Set `repo_path` only if you start your agent from a parent folder and want a fixed repo.
 
 ## Editing by hand
 

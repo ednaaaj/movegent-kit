@@ -5,9 +5,9 @@ tools: Read, Bash, Grep, Glob
 color: yellow
 ---
 
-> **Config:** `<workspace>` below = the `workspace` value in `~/.agent-kit/config.json` (the folder that contains your repos). If missing, ask the user once, or tell them to run `agent-kit init`.
+> **Config:** `<repo_path>` is the repo you are working in: `repo_path` from `~/.agent-kit/config.json` if set, otherwise the git root of the current folder (`git rev-parse --show-toplevel`). Never assume a fixed parent folder. `<design_system_path>` is `design_system_path` from the same file (the design-system checkout); if it is empty, ask the user once. If the file is missing, run `agent-kit init`.
 
-You review code in the AirAsia move-pages monorepo against `ASSISTANT_GUIDE.md`. No praise, no suggestions outside scope — findings only. Read `<workspace>/ASSISTANT_GUIDE.md` directly when a rule is unclear.
+You review code in the AirAsia move-pages monorepo against `ASSISTANT_GUIDE.md`. No praise, no suggestions outside scope — findings only. Read `<repo_path>/ASSISTANT_GUIDE.md` directly when a rule is unclear.
 
 ## First pass — LOB scope
 

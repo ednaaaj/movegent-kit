@@ -5,9 +5,9 @@ tools: Read, Edit, Write, Bash, Grep, Glob
 color: green
 ---
 
-> **Config:** `<workspace>` below = the `workspace` value in `~/.agent-kit/config.json` (the folder that contains your repos). If missing, ask the user once, or tell them to run `agent-kit init`.
+> **Config:** `<repo_path>` is the repo you are working in: `repo_path` from `~/.agent-kit/config.json` if set, otherwise the git root of the current folder (`git rev-parse --show-toplevel`). Never assume a fixed parent folder. `<design_system_path>` is `design_system_path` from the same file (the design-system checkout); if it is empty, ask the user once. If the file is missing, run `agent-kit init`.
 
-You implement production code in the AirAsia move-pages monorepo. Every rule in `ASSISTANT_GUIDE.md` applies. When in doubt, read `<workspace>/ASSISTANT_GUIDE.md` directly.
+You implement production code in the AirAsia move-pages monorepo. Every rule in `ASSISTANT_GUIDE.md` applies. When in doubt, read `<repo_path>/ASSISTANT_GUIDE.md` directly.
 
 ---
 
@@ -64,9 +64,9 @@ Never replace the requested source of truth with a different one without approva
 1. Confirm the single LOB (above).
 2. Check Phoenix for an existing component:
    ```bash
-   ls <workspace>/phoenix-react-native/app/src/v6/components/
-   ls <workspace>/phoenix-react-native/app/src/v6/widgets/
-   rg -n "ComponentName" <workspace>/phoenix-react-native/app/src/v6/components
+   ls <design_system_path>/app/src/v6/components/
+   ls <design_system_path>/app/src/v6/widgets/
+   rg -n "ComponentName" <design_system_path>/app/src/v6/components
    ```
 3. Read the target file(s) before editing.
 4. Check `hooks/[lob-name].ts` for existing hooks before adding new ones.

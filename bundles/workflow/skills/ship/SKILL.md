@@ -3,7 +3,7 @@ name: ship
 description: Run the MR team pipeline on one or more Jira tickets: intake, plan, implement, review, then commit/push/create MR. Use when the user says "/ship PROJ-123", "work on PROJ-123 and PROJ-124", or "pull these tickets". Stops only at the listed gates.
 ---
 
-> **Config:** read `~/.agent-kit/config.json` first. Placeholders below: `<workspace>`, `<gitlab_user>`, `<gitlab_project>` (and `<gitlab_project_encoded>` = URL-encoded), `<reviewers>` / `<reviewers_csv>`, `<jira_site>`, `<jira_cloud_id>`, `<repo_path>` (= `<workspace>/` + last path segment of `<gitlab_project>`), and `slack.*`. If the file is missing or a value is empty, ask the user once for it; if the file is missing tell them to run `agent-kit init`.
+> **Config:** read `~/.agent-kit/config.json` first. Placeholders below: `<repo_path>`, `<gitlab_user>`, `<gitlab_project>` (and `<gitlab_project_encoded>` = URL-encoded), `<reviewers>` / `<reviewers_csv>`, `<jira_site>`, `<jira_cloud_id>`, and `slack.*`. `<repo_path>` is the repo you are working in: `repo_path` from `~/.agent-kit/config.json` if set, otherwise the git root of the current folder (`git rev-parse --show-toplevel`). Never assume a fixed parent folder. If another value is empty, ask the user once; if the file is missing, tell them to run `agent-kit init`.
 
 # ship
 

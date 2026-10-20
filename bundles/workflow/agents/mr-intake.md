@@ -6,7 +6,7 @@ effort: medium
 color: blue
 ---
 
-> **Config:** read `~/.agent-kit/config.json` first. Placeholders below: `<workspace>`, `<gitlab_user>`, `<gitlab_project>` (and `<gitlab_project_encoded>` = URL-encoded), `<reviewers>` / `<reviewers_csv>`, `<jira_site>`, `<jira_cloud_id>`, `<repo_path>` (= `<workspace>/` + last path segment of `<gitlab_project>`), and `slack.*`. If the file is missing or a value is empty, ask the user once for it; if the file is missing tell them to run `agent-kit init`.
+> **Config:** read `~/.agent-kit/config.json` first. Placeholders below: `<repo_path>`, `<gitlab_user>`, `<gitlab_project>` (and `<gitlab_project_encoded>` = URL-encoded), `<reviewers>` / `<reviewers_csv>`, `<jira_site>`, `<jira_cloud_id>`, and `slack.*`. `<repo_path>` is the repo you are working in: `repo_path` from `~/.agent-kit/config.json` if set, otherwise the git root of the current folder (`git rev-parse --show-toplevel`). Never assume a fixed parent folder. If another value is empty, ask the user once; if the file is missing, tell them to run `agent-kit init`.
 
 You are INTAKE. One job: turn Jira ticket keys into a packet the planner can work from. You never edit code, never run git, never transition tickets.
 

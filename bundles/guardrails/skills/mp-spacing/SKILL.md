@@ -3,7 +3,7 @@ name: mp-spacing
 description: Replace raw padding/margin/gap pixel numbers with pd.ref.space spacing tokens — the full value-to-token map, which properties count as spacing, how to handle non-standard values, and stripping s()/ms()/vs() scaling wrappers first. Use whenever a stylesheet in move-pages or a migrated component contains raw spacing numbers.
 ---
 
-> **Config:** `<workspace>` below = the `workspace` value in `~/.agent-kit/config.json` (the folder that contains your repos). If missing, ask the user once, or tell them to run `agent-kit init`.
+> **Config:** `<repo_path>` is the repo you are working in: `repo_path` from `~/.agent-kit/config.json` if set, otherwise the git root of the current folder (`git rev-parse --show-toplevel`). Never assume a fixed parent folder. `<design_system_path>` is `design_system_path` from the same file (the design-system checkout); if it is empty, ask the user once. If the file is missing, run `agent-kit init`.
 
 # Spacing Tokens
 
@@ -27,7 +27,7 @@ How to replace raw pixel values used in padding, margin, gap, and similar spacin
 | `64`      | `pd.ref.space.spacing90.px`  |
 | `80`      | `pd.ref.space.spacing100.px` |
 
-Also check `<workspace>/move-pages/.gemini/tools/theme-map.json` under `spacing` — always prefer the file over memory.
+Also check `<repo_path>/.gemini/tools/theme-map.json` under `spacing` — always prefer the file over memory.
 
 ---
 

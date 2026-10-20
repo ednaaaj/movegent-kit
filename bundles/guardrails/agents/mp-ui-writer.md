@@ -5,15 +5,15 @@ tools: Read, Write, Edit, Grep, Glob
 color: green
 ---
 
-> **Config:** `<workspace>` below = the `workspace` value in `~/.agent-kit/config.json` (the folder that contains your repos). If missing, ask the user once, or tell them to run `agent-kit init`.
+> **Config:** `<repo_path>` is the repo you are working in: `repo_path` from `~/.agent-kit/config.json` if set, otherwise the git root of the current folder (`git rev-parse --show-toplevel`). Never assume a fixed parent folder. `<design_system_path>` is `design_system_path` from the same file (the design-system checkout); if it is empty, ask the user once. If the file is missing, run `agent-kit init`.
 
 Your only job is to write `MyComponentView.tsx`. Nothing else.
 
 ## Read first
 
-- `<workspace>/move-pages/.gemini/tools/migration-plan.json`
-- `<workspace>/move-pages/.gemini/tools/theme-map.json`
-- `<workspace>/move-pages/.gemini/tools/component-map.json`
+- `<repo_path>/.gemini/tools/migration-plan.json`
+- `<repo_path>/.gemini/tools/theme-map.json`
+- `<repo_path>/.gemini/tools/component-map.json`
 - Skills: `mp-unistyles`, `mp-token-usage`, `mp-spacing`, `mp-component-swap`, `mp-component-structure`, `mp-translate`
 
 ## ⚠️ Package name spelling — critical

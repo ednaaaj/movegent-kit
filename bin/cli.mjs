@@ -106,7 +106,9 @@ async function init() {
   const ask = async (q, d) => (await rl.question(`${q}${d ? ` [${d}]` : ''}: `)).trim() || d || '';
   log('Everything is optional: press Enter to skip. Skills read ~/.agent-kit/config.json at runtime.\n');
   const cfg = { ...old };
-  cfg.workspace = await ask('Workspace folder (where your repos live)', old.workspace);
+  delete cfg.workspace; // replaced by repo_path in 0.2.0
+  cfg.repo_path = await ask('Repo folder to work in (optional; blank = the git root of the folder your agent runs in)', old.repo_path);
+  cfg.design_system_path = await ask('Design-system checkout (optional; only the guardrails bundle uses it)', old.design_system_path);
   cfg.gitlab_user = await ask('GitLab username', old.gitlab_user);
   cfg.gitlab_project = await ask('Main GitLab project path (group/subgroup/repo)', old.gitlab_project);
   cfg.reviewers = (await ask('Usual MR reviewers, comma separated GitLab usernames', (old.reviewers || []).join(','))).split(',').map((s) => s.trim()).filter(Boolean);

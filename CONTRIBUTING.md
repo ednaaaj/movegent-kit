@@ -7,7 +7,7 @@ Thanks for contributing.
 1. Create `bundles/<bundle>/skills/<name>/SKILL.md`.
 2. Frontmatter `name` must equal the folder name.
 3. Frontmatter `description` says WHEN to use the skill.
-4. Use config placeholders (`<workspace>`, `<gitlab_project>`, `<jira_site>`, ...) instead of real values. See AGENTS.md for the list.
+4. Use config placeholders (`<repo_path>`, `<gitlab_project>`, `<jira_site>`, ...) instead of real values. See AGENTS.md for the list.
 5. No company names or internal terms.
 
 ## Add an agent (subagent)

@@ -3,7 +3,7 @@ name: mp-guardrails
 description: The mandatory rule checklist for any work in the move-pages monorepo or against the Phoenix React Native design system — Phoenix-first component lookup, pd design tokens, Unistyles breakpoints, file structure, services/TanStack Query patterns, i18n, web+native parity, tests, scope control, and the pre-integration red-flag list. Load this whenever a request touches move-pages, packages/hotels, packages/snap, phoenix-react-native, or any *-web / move-app host.
 ---
 
-> **Config:** `<workspace>` below = the `workspace` value in `~/.agent-kit/config.json` (the folder that contains your repos). If missing, ask the user once, or tell them to run `agent-kit init`.
+> **Config:** `<repo_path>` is the repo you are working in: `repo_path` from `~/.agent-kit/config.json` if set, otherwise the git root of the current folder (`git rev-parse --show-toplevel`). Never assume a fixed parent folder. `<design_system_path>` is `design_system_path` from the same file (the design-system checkout); if it is empty, ask the user once. If the file is missing, run `agent-kit init`.
 
 # move-pages Guardrails
 
@@ -28,9 +28,9 @@ and do not edit code until the user answers.
 **Phoenix gate.** Never build a custom component before checking Phoenix:
 
 ```bash
-ls <workspace>/phoenix-react-native/app/src/v6/components/
-ls <workspace>/phoenix-react-native/app/src/v6/widgets/
-rg -n "ComponentName" <workspace>/phoenix-react-native/app/src/v6/components
+ls <design_system_path>/app/src/v6/components/
+ls <design_system_path>/app/src/v6/widgets/
+rg -n "ComponentName" <design_system_path>/app/src/v6/components
 ```
 
 Never create custom Button, Input, Dialog, Sheet, List, Icon, Text, Checkbox, Radio, Chip, Spinner, Skeleton, Avatar, Badge, Divider, Card, Header, DatePicker, Accordion, Timeline, or Timer. Never modify Phoenix source or `node_modules` from this repo — if Phoenix is missing a capability, say so explicitly and stop, do not patch it locally.
@@ -128,7 +128,7 @@ types/                     # shared/common types (component-only props stay in t
 
 ## 8. Analytics
 
-Follow the Purchases pattern: `<workspace>/move-pages/packages/purchases/src/analytics/landingScreen/LandingScreen.analytics.ts`
+Follow the Purchases pattern: `<repo_path>/packages/purchases/src/analytics/landingScreen/LandingScreen.analytics.ts`
 
 - `*.meta.ts` — action keys, event names, constants, param types
 - `*.analytics.ts` — native/web payload mapping

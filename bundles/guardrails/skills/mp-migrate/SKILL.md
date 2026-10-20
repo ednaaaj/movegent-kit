@@ -3,7 +3,7 @@ name: mp-migrate
 description: Run the full old-JavaScript-to-TypeScript React Native component migration pipeline for move-pages — analyse the old component into a migration plan, then coordinate the type / constants-utils / UI / style / story / index writer sub-agents, and run the final self-review checklist. Use when asked to migrate, port, or modernise a legacy component to Phoenix + Unistyles + TypeScript.
 ---
 
-> **Config:** `<workspace>` below = the `workspace` value in `~/.agent-kit/config.json` (the folder that contains your repos). If missing, ask the user once, or tell them to run `agent-kit init`.
+> **Config:** `<repo_path>` is the repo you are working in: `repo_path` from `~/.agent-kit/config.json` if set, otherwise the git root of the current folder (`git rev-parse --show-toplevel`). Never assume a fixed parent folder. `<design_system_path>` is `design_system_path` from the same file (the design-system checkout); if it is empty, ask the user once. If the file is missing, run `agent-kit init`.
 
 # Component Migration Pipeline
 
@@ -21,10 +21,10 @@ You are the orchestrator. Coordinate specialist sub-agents to migrate one old Ja
 
 Tools (read-only data):
 
-- `<workspace>/move-pages/.gemini/tools/theme-map.json`
-- `<workspace>/move-pages/.gemini/tools/component-map.json`
+- `<repo_path>/.gemini/tools/theme-map.json`
+- `<repo_path>/.gemini/tools/component-map.json`
 
-The plan is written to `<workspace>/move-pages/.gemini/tools/migration-plan.json`.
+The plan is written to `<repo_path>/.gemini/tools/migration-plan.json`.
 
 Skills: `mp-component-structure`, `mp-token-usage`, `mp-spacing`, `mp-component-swap`, `mp-types`, `mp-stories`, `mp-index-exports`, `mp-unistyles`, `mp-translate`.
 

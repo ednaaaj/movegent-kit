@@ -14,6 +14,7 @@ All notable changes to this project are documented here. Format follows Keep a C
 - Docs in `docs/`, example config and example pack in `examples/`, SECURITY.md and CONTRIBUTING.md.
 
 ### Changed
+- `workspace` is gone. Skills now use the repo your agent runs in (its git root), so repos can live in any folder. Optional `repo_path` overrides it; optional `design_system_path` replaces the old sibling-folder assumption for the guardrails bundle. `init` drops any saved `workspace`.
 - Agent targets moved to `targets.json`; token-saver recipes moved to `bundles/savers/tools.json`.
 - Skills and subagents moved from top-level `skills/` and `agents/` into their bundles.
 

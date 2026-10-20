@@ -3,13 +3,13 @@ name: mp-token-usage
 description: Replace old colours and text styles with pd design-system tokens using theme-map.json — how to look up a token, the exact/high/low/unmatched confidence rules, using tokens in a stylesheet, and the getTextStyle pattern for TextView. Use whenever a colour, fontSize, or typescale value appears in move-pages or Phoenix work.
 ---
 
-> **Config:** `<workspace>` below = the `workspace` value in `~/.agent-kit/config.json` (the folder that contains your repos). If missing, ask the user once, or tell them to run `agent-kit init`.
+> **Config:** `<repo_path>` is the repo you are working in: `repo_path` from `~/.agent-kit/config.json` if set, otherwise the git root of the current folder (`git rev-parse --show-toplevel`). Never assume a fixed parent folder. `<design_system_path>` is `design_system_path` from the same file (the design-system checkout); if it is empty, ask the user once. If the file is missing, run `agent-kit init`.
 
 # Token Usage
 
 How to replace old colours and text styles with pd design system tokens using `theme-map.json`.
 
-Map file: `<workspace>/move-pages/.gemini/tools/theme-map.json`
+Map file: `<repo_path>/.gemini/tools/theme-map.json`
 
 ---
 
