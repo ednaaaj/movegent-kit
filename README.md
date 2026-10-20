@@ -1,12 +1,19 @@
 # agent-kit
 
-agent-kit sets up AI coding agents (Claude Code, Cursor, Gemini CLI, Antigravity, Codex) for a team that ships
-through Jira and GitLab. One command copies the team's skills and subagents into each agent's folder, connects
-the Jira MCP, sets a Slack allowlist, and installs optional token-saver tools. Private skill packs from your own
-git repo are added the same way.
+**Set up your team's AI coding agents with one command.**
 
-The content is split into bundles, so each person installs only what their work needs. No company keys, IDs or
-handles are baked in. You enter your own in `init`. No passwords or API tokens are asked for or stored.
+Everyone gets the same skills, the same Jira connection and the same habits, whether they use Claude Code,
+Cursor, Gemini CLI, Antigravity or Codex. Setup takes a few minutes, and each person picks only what their work needs.
+
+- **Ticket to merge request.** The agent reads a Jira ticket, makes a branch, writes the change, opens the merge
+  request, and then keeps fixing CI and review comments until it is ready for you to merge.
+- **Team rules the agent follows.** Frontend guardrails for React Native and design-system projects, plus review
+  checklists.
+- **Lower token use.** Optional tools that shrink what the agent reads and writes.
+- **Your own skills on top.** Add your team's private skills from your own git repo.
+
+Nothing about your company is built in. You enter your own Jira site, GitLab project and Slack channel once, and
+they stay on your machine. No passwords or API tokens are asked for or stored.
 
 ## Install
 

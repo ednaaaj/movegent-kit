@@ -1,7 +1,7 @@
 {
   "name": "@ednaaaj/agent-kit",
   "version": "0.2.0",
-  "description": "Install AI-agent skill bundles (workflow, guardrails, savers), Jira/Slack setup and dev tools for Claude Code, Cursor, Antigravity/Gemini CLI and Codex. Add private skill packs.",
+  "description": "One command to set up Claude Code, Cursor, Gemini CLI, Antigravity and Codex with your team's skills, Jira and Slack.",
   "type": "module",
   "files": [
     "bin",
