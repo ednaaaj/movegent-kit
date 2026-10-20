@@ -1,0 +1,20 @@
+{
+  "name": "agent-kit",
+  "owner": { "name": "Jhondi Pamonag" },
+  "metadata": { "description": "Company-neutral AI-agent skills and subagents for Claude Code" },
+  "plugins": [
+    {
+      "name": "agent-kit",
+      "source": "./",
+      "description": "Workflow, review and frontend guardrail skills and subagents for Claude Code",
+      "version": "0.2.0",
+      "author": { "name": "Jhondi Pamonag" },
+      "homepage": "https://github.com/ednaaaj/movegent-kit",
+      "repository": "https://github.com/ednaaaj/movegent-kit",
+      "license": "MIT",
+      "keywords": ["claude-code", "agents", "skills", "jira", "mcp"],
+      "category": "workflow",
+      "strict": false
+    }
+  ]
+}

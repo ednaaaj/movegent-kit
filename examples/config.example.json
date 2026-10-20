@@ -1,0 +1,18 @@
+{
+  "workspace": "/home/me/work",
+  "gitlab_user": "jdoe",
+  "gitlab_project": "my-group/my-team/my-repo",
+  "reviewers": ["alice", "bob"],
+  "jira_site": "yourco.atlassian.net",
+  "jira_cloud_id": "00000000-0000-0000-0000-000000000000",
+  "slack": {
+    "auto_send": false,
+    "channel": { "name": "#team-reviews", "id": "C0123456789" },
+    "people": [
+      { "name": "Alice", "id": "U0123456789" },
+      { "name": "Bob", "id": "U0987654321" }
+    ],
+    "mention": ["U0123456789"]
+  },
+  "packs": []
+}

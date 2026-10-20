@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "agent-kit config (~/.agent-kit/config.json)",
+  "type": "object",
+  "additionalProperties": true,
+  "properties": {
+    "workspace": { "type": "string" },
+    "gitlab_user": { "type": "string" },
+    "gitlab_project": { "type": "string" },
+    "reviewers": { "type": "array", "items": { "type": "string" } },
+    "jira_site": { "type": "string" },
+    "jira_cloud_id": { "type": "string" },
+    "slack": {
+      "type": "object",
+      "properties": {
+        "auto_send": { "type": "boolean" },
+        "channel": {
+          "oneOf": [
+            {
+              "type": "object",
+              "properties": {
+                "name": { "type": "string" },
+                "id": { "type": "string", "pattern": "^[CG][A-Z0-9]{8,}$" }
+              }
+            },
+            { "type": "null" }
+          ]
+        },
+        "people": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": { "type": "string" },
+              "id": { "type": "string", "pattern": "^U[A-Z0-9]+$" }
+            }
+          }
+        },
+        "mention": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "packs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "url": { "type": "string" },
+          "local": { "type": "boolean" }
+        }
+      }
+    }
+  }
+}

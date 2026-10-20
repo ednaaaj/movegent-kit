@@ -1,0 +1,11 @@
+{
+  "name": "agent-kit",
+  "version": "0.2.0",
+  "description": "Company-neutral AI-agent skills and subagents for Claude Code: workflow, review and frontend guardrail skills, plus an installer CLI for Jira MCP, Slack allowlist and token-saver tools",
+  "author": { "name": "Jhondi Pamonag" },
+  "homepage": "https://github.com/ednaaaj/movegent-kit",
+  "repository": "https://github.com/ednaaaj/movegent-kit",
+  "license": "MIT",
+  "keywords": ["claude-code", "agents", "skills", "jira", "mcp", "workflow", "guardrails"],
+  "skills": ["./skills/"]
+}

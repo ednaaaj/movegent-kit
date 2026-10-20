@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "atlassianMcp": ["npx", "-y", "mcp-remote", "https://mcp.atlassian.com/v1/sse"],
+  "agents": {
+    "claude": {
+      "dir": ".claude",
+      "skills": ".claude/skills",
+      "agents": ".claude/agents",
+      "mcp": { "type": "cli", "bin": "claude", "args": ["mcp", "add", "-s", "user", "atlassian", "--"], "appendMcpCommand": true }
+    },
+    "cursor": {
+      "dir": ".cursor",
+      "skills": ".cursor/skills",
+      "mcp": { "type": "json", "file": ".cursor/mcp.json" }
+    },
+    "gemini": {
+      "dir": ".gemini",
+      "skills": ".gemini/skills",
+      "shared": true,
+      "mcp": { "type": "json", "file": ".gemini/settings.json" }
+    },
+    "antigravity": {
+      "dir": ".gemini/antigravity",
+      "skills": ".gemini/antigravity/skills",
+      "shared": true,
+      "mcp": { "type": "json", "file": ".gemini/antigravity/mcp_config.json" }
+    },
+    "codex": {
+      "dir": ".codex",
+      "skills": ".codex/skills",
+      "shared": true,
+      "mcp": { "type": "cli", "bin": "codex", "args": ["mcp", "add", "atlassian", "--"], "appendMcpCommand": true }
+    }
+  }
+}

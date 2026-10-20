@@ -18,46 +18,30 @@ const flag = (n) => args.includes(`--${n}`);
 const opt = (n) => args.find((a) => a.startsWith(`--${n}=`))?.split('=')[1];
 const DRY = flag('dry-run');
 
-const ATLASSIAN = ['npx', '-y', 'mcp-remote', 'https://mcp.atlassian.com/v1/sse'];
+// Data tables live in manifests/ (agents.json, tools.json); this file only holds the logic.
+function loadManifest(name) {
+  const f = join(KIT, 'manifests', name);
+  try { return JSON.parse(readFileSync(f, 'utf8')); }
+  catch (e) { console.error(`agent-kit: cannot load ${f}: ${e.message}`); process.exit(1); }
+}
 
 // ponytail: skill dirs / MCP files per agent are best-known paths (checked against a real machine
-// for claude, cursor, codex, gemini); fix here if an agent moves them. Subagents are Claude-format only.
-const AGENTS = {
-  claude: { dir: '.claude', skills: '.claude/skills', agents: '.claude/agents',
-    mcp: () => sh('claude', ['mcp', 'add', '-s', 'user', 'atlassian', '--', ...ATLASSIAN]) },
-  cursor: { dir: '.cursor', skills: '.cursor/skills', mcp: () => jsonMcp('.cursor/mcp.json') },
-  gemini: { dir: '.gemini', skills: '.gemini/skills', shared: true, mcp: () => jsonMcp('.gemini/settings.json') },
-  antigravity: { dir: '.gemini/antigravity', skills: '.gemini/antigravity/skills', shared: true,
-    mcp: () => jsonMcp('.gemini/antigravity/mcp_config.json') },
-  codex: { dir: '.codex', skills: '.codex/skills', shared: true,
-    mcp: () => sh('codex', ['mcp', 'add', 'atlassian', '--', ...ATLASSIAN]) },
-};
+// for claude, cursor, codex, gemini); fix them in manifests/agents.json if an agent moves them.
+// Subagents are Claude-format only.
+const AGENTS_MANIFEST = loadManifest('agents.json');
+const ATLASSIAN = AGENTS_MANIFEST.atlassianMcp;
+const AGENTS = Object.fromEntries(Object.entries(AGENTS_MANIFEST.agents).map(([n, { mcp, ...a }]) => [n, {
+  ...a,
+  mcp: mcp.type === 'cli'
+    ? () => sh(mcp.bin, [...mcp.args, ...(mcp.appendMcpCommand ? ATLASSIAN : [])])
+    : () => jsonMcp(mcp.file),
+}]));
 
-// Third-party tools (token savers + helpers). Per-agent steps run only for the agents you picked.
-// all = run once; after = run once after `all`; <agent> = steps (or a manual note) for that agent; other = note for the rest.
-const PONY = 'https://github.com/DietrichGebert/ponytail';
-const TOOLS = {
-  caveman: { desc: 'terse replies, ~75% fewer output tokens',
-    all: ['npx', '-y', 'github:JuliusBrussee/caveman'] }, // its installer auto-detects every agent
-  ponytail: { desc: 'lazy-senior-dev mode: shortest working code',
-    claude: [['claude', 'plugin', 'marketplace', 'add', `${PONY}.git`], ['claude', 'plugin', 'install', 'ponytail@ponytail']],
-    gemini: [['gemini', 'extensions', 'install', PONY]],
-    antigravity: [['agy', 'plugin', 'install', PONY]],
-    cursor: `manual: copy .cursor/rules from ${PONY}`, codex: `manual: see the Codex section in ${PONY}` },
-  rtk: { desc: 'compresses shell output 60-90% (needs Homebrew)', hint: 'no brew: https://github.com/rtk-ai/rtk#installation',
-    all: ['brew', 'install', 'rtk'],
-    claude: [['rtk', 'init', '-g']], gemini: [['rtk', 'init', '-g', '--gemini']],
-    codex: [['rtk', 'init', '-g', '--codex']], cursor: [['rtk', 'init', '-g', '--agent', 'cursor']],
-    antigravity: [['rtk', 'init', '--agent', 'antigravity']],
-    other: 'manual: see https://github.com/rtk-ai/rtk#installation' },
-  headroom: { desc: 'context compression + retrieve MCP (needs uv)', hint: 'no uv: https://docs.astral.sh/uv/',
-    all: ['uv', 'tool', 'install', 'headroom-ai'], after: ['headroom', 'mcp', 'install'] },
-  'context-mode': { desc: 'keeps big tool output out of your context (Claude Code plugin)',
-    claude: [['claude', 'plugin', 'marketplace', 'add', 'mksglu/context-mode'], ['claude', 'plugin', 'install', 'context-mode@context-mode']],
-    other: 'manual: npm i -g context-mode, then add it as an MCP server' },
-  graphify: { desc: 'turns a codebase into a queryable knowledge graph (needs uv)', hint: 'no uv: https://docs.astral.sh/uv/',
-    all: ['uv', 'tool', 'install', 'graphifyy'], post: (a) => ['graphify', 'install', '--platform', a] },
-};
+// Third-party tools (token savers + helpers), see manifests/tools.json. Per-agent steps run only for the agents you picked.
+// all = run once; after = run once after `all`; <agent> = steps (or a manual note) for that agent; other = note for the rest;
+// postTemplate = fallback command for agents with no entry, {agent} is replaced by the agent name.
+const TOOLS = Object.fromEntries(Object.entries(loadManifest('tools.json').tools).map(([n, { postTemplate, ...t }]) => [n,
+  postTemplate ? { ...t, post: (a) => postTemplate.map((x) => x.replace('{agent}', a)) } : t]));
 
 async function pickTools() {
   const names = Object.keys(TOOLS);

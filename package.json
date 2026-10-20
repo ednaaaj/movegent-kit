@@ -1,18 +1,35 @@
 {
   "name": "@ednaaaj/agent-kit",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Install AI-agent skills, Jira/Slack setup and dev tools for Claude Code, Cursor, Antigravity/Gemini CLI and Codex. Add private skill packs.",
   "type": "module",
+  "files": [
+    "bin",
+    "manifests",
+    "schemas",
+    "skills",
+    "agents",
+    "docs",
+    "examples",
+    ".claude-plugin",
+    "README.md",
+    "AGENTS.md",
+    "CLAUDE.md",
+    "CONTRIBUTING.md",
+    "SECURITY.md",
+    "CHANGELOG.md",
+    "TROUBLESHOOTING.md",
+    "VERSION",
+    "LICENSE"
+  ],
   "bin": {
     "agent-kit": "bin/cli.mjs"
   },
-  "files": [
-    "bin",
-    "skills",
-    "agents",
-    "README.md",
-    "LICENSE"
-  ],
+  "scripts": {
+    "test": "node --test tests/*.test.mjs",
+    "validate": "node scripts/validate.mjs",
+    "check": "node --check bin/cli.mjs && npm run validate && npm test"
+  },
   "engines": {
     "node": ">=18"
   },
