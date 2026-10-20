@@ -15,6 +15,21 @@ node bin/cli.mjs doctor
 Flags: `--agents=claude,cursor`, `--skip-mcp`, `--skip-tools`, `--dry-run`.
 Update: `git pull && node bin/cli.mjs install --skip-tools`.
 
+## Which agent reads what
+`install` asks which agents you use (numbered menu, found ones pre-selected) and writes to each one's own folder:
+
+| Agent | Skills | Subagents | Jira MCP |
+| --- | --- | --- | --- |
+| Claude Code | `~/.claude/skills` | `~/.claude/agents` | `claude mcp add` |
+| Cursor | `~/.cursor/skills` | not installed | `~/.cursor/mcp.json` |
+| Gemini CLI | `~/.gemini/skills` | not installed | `~/.gemini/settings.json` |
+| Antigravity | `~/.gemini/antigravity/skills` | not installed | `~/.gemini/antigravity/mcp_config.json` |
+| Codex | `~/.codex/skills` | not installed | `codex mcp add` |
+
+Gemini, Antigravity and Codex also get a shared copy in `~/.agents/skills`. Subagents are Claude-format
+only, so other agents get skills but not the `mr-*` / `*-writer` subagents. Pick agents non-interactively
+with `--agents=claude,cursor,gemini,antigravity,codex`.
+
 ## Workflow skills
 | Skill | Use it for |
 | --- | --- |

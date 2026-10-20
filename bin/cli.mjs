@@ -20,14 +20,16 @@ const DRY = flag('dry-run');
 
 const ATLASSIAN = ['npx', '-y', 'mcp-remote', 'https://mcp.atlassian.com/v1/sse'];
 
-// ponytail: skill dirs / MCP files per agent are best-known paths; fix here if an agent moves them.
+// ponytail: skill dirs / MCP files per agent are best-known paths (checked against a real machine
+// for claude, cursor, codex, gemini); fix here if an agent moves them. Subagents are Claude-format only.
 const AGENTS = {
-  claude: { dir: '.claude', skills: ['.claude/skills'], agents: '.claude/agents',
+  claude: { dir: '.claude', skills: '.claude/skills', agents: '.claude/agents',
     mcp: () => sh('claude', ['mcp', 'add', '-s', 'user', 'atlassian', '--', ...ATLASSIAN]) },
-  cursor: { dir: '.cursor', skills: ['.cursor/skills'], mcp: () => jsonMcp('.cursor/mcp.json') },
-  gemini: { dir: '.gemini', skills: ['.gemini/skills', '.gemini/antigravity/skills'],
-    mcp: () => { jsonMcp('.gemini/settings.json'); if (existsSync(join(HOME, '.gemini/antigravity'))) jsonMcp('.gemini/antigravity/mcp_config.json'); } },
-  codex: { dir: '.codex', skills: ['.codex/skills'],
+  cursor: { dir: '.cursor', skills: '.cursor/skills', mcp: () => jsonMcp('.cursor/mcp.json') },
+  gemini: { dir: '.gemini', skills: '.gemini/skills', shared: true, mcp: () => jsonMcp('.gemini/settings.json') },
+  antigravity: { dir: '.gemini/antigravity', skills: '.gemini/antigravity/skills', shared: true,
+    mcp: () => jsonMcp('.gemini/antigravity/mcp_config.json') },
+  codex: { dir: '.codex', skills: '.codex/skills', shared: true,
     mcp: () => sh('codex', ['mcp', 'add', 'atlassian', '--', ...ATLASSIAN]) },
 };
 
@@ -164,10 +166,17 @@ async function pickAgents() {
   const names = Object.keys(AGENTS);
   const detected = names.filter((n) => existsSync(join(HOME, AGENTS[n].dir)));
   if (!process.stdin.isTTY) return detected;
+  log('Which agents do you use? Each one reads skills from its own folder:');
+  names.forEach((n, i) => {
+    const a = AGENTS[n];
+    log(`  ${i + 1}) ${n.padEnd(12)} ${detected.includes(n) ? '[found]    ' : '[not found]'} ~/${a.skills}${a.agents ? ` + ~/${a.agents}` : ''}`);
+  });
   const rl = createInterface({ input: process.stdin, output: process.stdout });
-  const a = (await rl.question(`Install for which agents? (${names.join(', ')}, or "all") [${detected.join(',') || 'none detected'}]: `)).trim();
+  const a = (await rl.question(`Numbers or names, comma separated, "all", or Enter for [found] ones (${detected.join(',') || 'none'}): `)).trim();
   rl.close();
-  return !a ? detected : a === 'all' ? names : a.split(',').map((s) => s.trim());
+  if (!a) return detected;
+  if (a === 'all') return names;
+  return a.split(',').map((s) => s.trim()).map((s) => names[Number(s) - 1] || s).filter((s) => names.includes(s));
 }
 
 async function install() {
@@ -175,7 +184,7 @@ async function install() {
   if (opt('pack')) packAdd(opt('pack'));
   const want = opt('agents')?.split(',') ?? (await pickAgents());
   const found = Object.entries(AGENTS).filter(([n]) => want.includes(n));
-  if (!found.length) return log('no supported agent found (~/.claude ~/.cursor ~/.gemini ~/.codex). Use --agents=claude,cursor,...');
+  if (!found.length) return log('no agent selected or found. Use --agents=claude,cursor,gemini,antigravity,codex');
   log(`agents: ${found.map(([n]) => n).join(', ')}`);
 
   // Built-in skills first, then each pack (a pack can override a built-in of the same name).
@@ -183,12 +192,12 @@ async function install() {
   for (const s of sources) {
     log(`\n[skills: ${s.name}]`);
     if (!existsSync(s.dir)) { log(`  missing ${s.dir} (run \`agent-kit pack update\`)`); continue; }
-    copyDir(join(s.dir, 'skills'), join(HOME, '.agents/skills')); // shared standard dir, read by several agents
-    for (const [n, a] of found) for (const rel of a.skills) {
-      if (rel.includes('antigravity') && !existsSync(join(HOME, '.gemini/antigravity'))) continue;
-      log(` ${n}:`); copyDir(join(s.dir, 'skills'), join(HOME, rel));
+    if (found.some(([, x]) => x.shared)) { log(' shared (~/.agents/skills, read by gemini/antigravity/codex):'); copyDir(join(s.dir, 'skills'), join(HOME, '.agents/skills')); }
+    for (const [n, x] of found) {
+      log(` ${n}:`);
+      copyDir(join(s.dir, 'skills'), join(HOME, x.skills));
+      if (x.agents) copyDir(join(s.dir, 'agents'), join(HOME, x.agents));
     }
-    if (found.some(([n]) => n === 'claude')) { log(' claude subagents:'); copyDir(join(s.dir, 'agents'), join(HOME, '.claude/agents')); }
   }
 
   if (!flag('skip-mcp')) {
